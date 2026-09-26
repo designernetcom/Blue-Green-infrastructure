@@ -26,66 +26,75 @@ document.addEventListener('keydown', (event) => {
   }
 });
 
-const projectTabs = $$('[role="tab"]');
-function activateTab(tab, focus = false) {
-  projectTabs.forEach(item => {
-    const active = item === tab;
-    item.setAttribute('aria-selected', String(active));
-    item.tabIndex = active ? 0 : -1;
-    document.getElementById(item.getAttribute('aria-controls')).hidden = !active;
-  });
-  if (focus) tab.focus();
-}
-projectTabs.forEach((tab, index) => {
-  tab.addEventListener('click', () => activateTab(tab));
-  tab.addEventListener('keydown', event => {
-    let next;
-    if (event.key === 'ArrowRight') next = (index + 1) % projectTabs.length;
-    if (event.key === 'ArrowLeft') next = (index + projectTabs.length - 1) % projectTabs.length;
-    if (event.key === 'Home') next = 0;
-    if (event.key === 'End') next = projectTabs.length - 1;
-    if (next !== undefined) { event.preventDefault(); activateTab(projectTabs[next], true); }
-  });
-});
-
+// Every project names its executing firm. Partner-firm work is never presented as Blue & Green's own.
+const agrotech = { partner: 'Mr. Anil S. Pund', firm: 'Agrotech Engineers & Consultants' };
+const blueGreen = { partner: 'Blue & Green founding partners', firm: 'Blue & Green Infrastructure' };
 const projects = {
   reliance: {
-    title: 'Reliance Corporate Park', category: 'FOUNDING-FIRM LEGACY · NAVI MUMBAI', image: 'assets/image15.jpg',
-    alt: 'Circular landscaped courtyard at Reliance Corporate Park',
-    paragraphs: ['Reliance Corporate Park, Ghansoli, is part of the corporate and industrial client legacy of Agrotech Engineers & Consultants, one of the three enterprises behind Blue & Green Infrastructure.', 'The campus reflects the scale of environments within our founding firms’ established portfolio, where landscape, water infrastructure and day-to-day operations share the same ground.'],
-    note: 'Part of the established Agrotech Engineers & Consultants project legacy, brought together under the Blue & Green vision.'
-  },
-  nda: {
-    title: 'National Defence Academy', category: 'FOUNDING-FIRM LEGACY · KHADAKWASLA, PUNE', image: 'assets/image28.jpg',
-    alt: 'National Defence Academy gardens and main building',
-    paragraphs: ['The National Defence Academy is included in Agrotech Engineers & Consultants’ institutional, defence and research client legacy.', 'It forms part of an established body of work across complex institutional environments that our founding partners bring to Blue & Green Infrastructure.'],
-    note: 'Part of the established Agrotech Engineers & Consultants project legacy, brought together under the Blue & Green vision.'
+    ...agrotech, title: 'Reliance Corporate Park', location: 'Ghansoli, Navi Mumbai', category: 'PARTNERS’ TRACK RECORD · CORPORATE & INDUSTRIAL',
+    details: 'Corporate campus listed in Agrotech’s corporate and industrial client record.',
+    gallery: [['assets/image15.jpg', 'Circular landscaped courtyard in front of the Jio building at Reliance Corporate Park'], ['assets/image19.jpg', 'Aerial view of landscaped gardens and roads across Reliance Corporate Park'], ['assets/image23.jpg', 'Seasonal flower beds and lawns beside the glass office blocks']],
+    paragraphs: ['Reliance Corporate Park at Ghansoli is part of the corporate and industrial client record of Agrotech Engineers & Consultants, the firm Mr. Anil Pund founded in 1996.', 'The campus shows the scale of environment in Agrotech’s portfolio: landscaped courtyards, planted avenues and seasonal beds woven through a working corporate headquarters.']
   },
   bajaj: {
-    title: 'Bajaj Auto, Chakan', category: 'FOUNDING-FIRM LEGACY · CHAKAN, MAHARASHTRA', image: 'assets/image16.jpg',
-    alt: 'Landscaped industrial campus at Bajaj Auto, Chakan',
-    paragraphs: ['Bajaj Auto’s Chakan manufacturing plant is featured in the corporate and industrial client legacy of Agrotech Engineers & Consultants.', 'The site photography brings together expansive planted grounds, water features and industrial architecture, illustrating the scale of the founding-firm portfolio.'],
-    note: 'Part of the established Agrotech Engineers & Consultants project legacy, brought together under the Blue & Green vision.'
+    ...agrotech, title: 'Bajaj Auto Manufacturing Plant', location: 'Chakan, Pune', category: 'PARTNERS’ TRACK RECORD · CORPORATE & INDUSTRIAL',
+    details: 'Manufacturing campus listed in Agrotech’s corporate and industrial client record.',
+    gallery: [['assets/image16.jpg', 'Aerial view of lawns, planting and a circular water feature at Bajaj Auto, Chakan'], ['assets/image27.png', 'Office building fronted by a reflecting pool with fountain jets'], ['assets/image21.jpg', 'Main entrance gateway to the Bajaj Auto plant']],
+    paragraphs: ['Bajaj Auto’s Chakan manufacturing plant is part of the corporate and industrial client record of Agrotech Engineers & Consultants.', 'The site brings together expansive planted grounds, formal water features and industrial architecture.']
+  },
+  nagothane: {
+    ...agrotech, title: 'Reliance Industries, Nagothane Manufacturing Division', location: 'Nagothane, Raigad', category: 'PARTNERS’ TRACK RECORD · CORPORATE & INDUSTRIAL',
+    details: 'Industrial complex listed in Agrotech’s corporate and industrial client record.',
+    gallery: [['assets/image24.jpg', 'Aerial view of the Nagothane manufacturing division set within green landscape and water bodies'], ['assets/image18.jpg', 'Tree-lined entrance avenue at the Nagothane manufacturing division']],
+    paragraphs: ['Reliance Industries’ Nagothane Manufacturing Division in Raigad district is part of Agrotech Engineers & Consultants’ corporate and industrial client record.', 'Its green buffers, avenues and water bodies show landscape working at industrial scale.']
+  },
+  dharwad: {
+    ...agrotech, title: 'Tata Motors, Dharwad', location: 'Dharwad, Karnataka', category: 'PARTNERS’ TRACK RECORD · CORPORATE & INDUSTRIAL',
+    details: 'Manufacturing plant listed in Agrotech’s corporate and industrial client record.',
+    gallery: [['assets/image22.jpg', 'Topiary lettering and flower beds at the Tata Motors Dharwad entrance'], ['assets/image30.png', 'Landscaped approach to the Tata Motors Dharwad gateway']],
+    paragraphs: ['Tata Motors’ Dharwad plant is part of Agrotech Engineers & Consultants’ corporate and industrial client record.', 'Tata Motors has been a client of the partners’ firms across both its Pimpri and Dharwad plants.']
+  },
+  nda: {
+    ...agrotech, title: 'National Defence Academy', location: 'Khadakwasla, Pune', category: 'PARTNERS’ TRACK RECORD · INSTITUTIONAL & DEFENCE',
+    details: 'Defence campus listed in Agrotech’s institutional, defence and research client record.',
+    gallery: [['assets/image28.jpg', 'Formal gardens and the main building of the National Defence Academy']],
+    paragraphs: ['The National Defence Academy is part of Agrotech Engineers & Consultants’ institutional, defence and research client record.', 'It reflects the partners’ experience in complex institutional environments.']
+  },
+  serum: {
+    ...agrotech, title: 'Serum Institute of India', location: 'Hadapsar, Pune', category: 'PARTNERS’ TRACK RECORD · INSTITUTIONAL & RESEARCH',
+    details: 'Research and manufacturing campus listed in Agrotech’s institutional client record.',
+    gallery: [['assets/image31.jpg', 'Landscaped entrance to the Serum Institute of India campus at Hadapsar']],
+    paragraphs: ['The Serum Institute of India is part of Agrotech Engineers & Consultants’ institutional, defence and research client record.']
   },
   tata: {
-    title: 'Ratan Tata Memorial', category: 'BLUE & GREEN COMMISSION · PIMPRI-CHINCHWAD, PUNE',
-    paragraphs: ['At Tata Motors’ Pimpri-Chinchwad plant, Blue & Green Infrastructure delivered the water feature framing the Ratan Tata memorial, unveiled on 28 December 2025.', 'The rain curtain and bubbler nozzle installation was delivered as a complete package: design, equipment supply, installation, testing and commissioning of the electromechanical and plumbing works.', 'The engineering focused on an even water curtain, reliable operation and a composed visual backdrop to the memorial.'],
-    note: 'Scope: Water feature design · Supply · Installation · Testing & commissioning · Maintenance handover'
+    ...blueGreen, title: 'Ratan Tata Memorial Water Curtain', location: 'Tata Motors plant, Pimpri-Chinchwad, Pune', category: 'BLUE & GREEN COMMISSION · UNVEILED 28 DECEMBER 2025',
+    details: 'Rain curtain and bubbler nozzle water feature: design, supply, installation, testing and commissioning.',
+    paragraphs: ['On 28 December 2025, the birth anniversary of the late Ratan Tata, a life-size statue of the industrialist was unveiled at Tata Motors’ Pimpri-Chinchwad plant, part of a wider initiative to establish memorials at its major manufacturing sites.', 'Blue & Green Infrastructure delivered the water feature that frames the memorial as a single package: design, supply, installation, testing and commissioning of the complete electromechanical and plumbing works.', 'The feature sits within a working plant, so it must run reliably and quietly, hold an even, unbroken curtain, and frame the figure without competing with it.'],
+    list: ['Design of the water feature plumbing and electromechanical system', 'Supply of pumps, manifolds, nozzles, valves, filtration and control equipment', 'Installation of the rain curtain manifold and bubbler nozzle array', 'Testing, commissioning and performance verification', 'Handover to plant maintenance']
   },
   adani: {
-    title: 'Adani Data Centre Campuses', category: 'BLUE & GREEN COMMISSION · NAVI MUMBAI & HYDERABAD',
-    paragraphs: ['A landscape and irrigation design consultancy programme across four sites: two in Navi Mumbai and two in Hyderabad, with a combined campus extent of 170.17 acres.', 'Blue & Green Infrastructure works alongside the architectural master plan, developing landscape design and irrigation documentation at the 60%, 90% and 100% design stages.', 'The integrated approach resolves planting zones, drainage, service routes and irrigation against the operational requirements of data centre campuses.'],
-    note: 'Role: Design consultancy. Scope: Landscape & irrigation design. Campus extent: 170.17 acres across four sites.'
+    ...blueGreen, title: 'Adani Data Centre Campuses', location: 'Navi Mumbai ×2 · Hyderabad ×2', category: 'BLUE & GREEN COMMISSION · DESIGN CONSULTANCY',
+    details: 'Landscape and irrigation design consultancy across 170.17 acres, with Ar. Gautami Renuse of The Thin Architect.',
+    paragraphs: ['The programme comprises data centre campuses extending to 170.17 acres across four sites, with multiple data centre buildings and ancillary infrastructure including a DG building, HSD yard and associated services.', 'In design collaboration with Principal Architect Ar. Gautami Renuse of The Thin Architect, Blue & Green issues landscape design and irrigation documentation at the 60%, 90% and 100% design stages, alongside the architectural package at each gate.', 'Working concurrently with the architect lets levels, drainage falls, service routes and planting zones be resolved while they can still be changed on paper.'],
+    list: ['Water accountability: demonstrably efficient, low-draw irrigation', 'Security zoning: planting that respects sightlines, perimeter security and controlled access', 'Service coordination: routes resolved against DG buildings, HSD yards, cable trenches and utility corridors', 'Operational continuity: maintenance that never interrupts a facility that cannot go offline']
   },
   brahmacorp: {
-    title: 'Brahmacorp Mini-India Theme Park', category: 'BLUE & GREEN COMMISSION · PERNEM, NORTH GOA',
-    paragraphs: ['Blue & Green Infrastructure is engaged as landscape partner for Brahmacorp’s Mini-India theme park in North Goa.', 'The scope includes landscaping, irrigation and fountain works across the site, including water and landscape treatments around the park’s monuments.', 'Planting, irrigation schedules, water quality and maintainability must work together in an environment designed for continuous public use.'],
-    note: 'Role: Landscape partner. Scope: Landscaping · Irrigation · Fountains & water features'
+    ...blueGreen, title: 'Brahmacorp Mini-India Theme Park', location: 'Pernem, North Goa', category: 'BLUE & GREEN COMMISSION · LANDSCAPE PARTNER',
+    details: 'Landscaping, irrigation and fountain works across the park, including water treatments to its monuments.',
+    paragraphs: ['Blue & Green Infrastructure is the appointed landscape partner for Brahmacorp’s theme park in North Goa, responsible for landscape execution, irrigation automation and fountain engineering.', 'Planting must hold its appearance under continuous footfall, irrigation must run around visitor hours, and water features within reach of the public must be safe, clean and fail-safe.'],
+    list: ['Landscape design and execution across the park', 'Irrigation for park planting and landscaped zones', 'Fountains and water treatments to the monuments: Gateway of India, Swami Vivekananda Memorial, Golden Temple, Taj Mahal, Sher Shah Tomb, Statue of Unity and Jal Mahal', 'Mist system and monument filtration systems']
   }
 };
 
+const aditiProjects = [
+  ['Capgemini Software Park', 'Hinjewadi, Pune', 'tech'], ['Infosys Campus', '', 'tech'], ['Tata Consultancy Services Campus', '', 'tech'], ['Microsoft', 'Hyderabad', 'tech'], ['Wipro', 'Pune', 'tech'], ['Ascendas IT Park', 'Kharadi, Pune', 'tech'], ['Bagmane Group', 'Bengaluru', 'tech'], ['Principal Global Services Pvt. Ltd.', 'Pune', 'tech'], ['Forbes Marshall', 'Pune', 'tech'], ['Volkswagen Car Plant', 'Pune', 'tech'], ['ITC', 'Ranjangaon', 'tech'],
+  ['GMR Hyderabad International Airport', 'Hyderabad', 'civic'], ['AURIC', 'Bidkin, Chhatrapati Sambhajinagar', 'civic'], ['Bruhat Bengaluru Mahanagara Palike', 'Bengaluru', 'civic'], ['Pune Municipal Corporation · Okayama Garden', 'Pune', 'civic'], ['STP Unit, Chikhali · PCMC', 'Pimpri-Chinchwad', 'civic'], ['Chhatrapati Raje Shivaji Udyan', 'Wadgaon Sheri, Pune', 'civic'], ['IIT Hyderabad', 'Hyderabad', 'civic'], ['IIT Gandhinagar', 'Gandhinagar', 'civic'], ['Capital Center', 'Raipur', 'civic'], ['Dumas Road', 'Surat', 'civic'],
+  ['Residence Antilia', 'Mumbai', 'res'], ['Lodha Park · Lodha Place · The Park', 'Mumbai', 'res'], ['Godrej Serenity', 'Mumbai', 'res'], ['Life Republic, Kolte Patil', 'Pune', 'res'], ['Lavasa Corporation Ltd.', 'Pune', 'res'], ['Pune Golf Course (18 holes)', 'Pune', 'res'], ['RSI Army Golf Course', 'Pune', 'res'], ['Poonawalla Stud Farms', 'Pune', 'res'], ['GIFT Samruddhi Sarovar', 'Ahmedabad', 'res'], ['Ramnath City', 'Nagpur', 'res'], ['RAS Township', 'Beawar, Rajasthan', 'res'], ['Finedine Hotel', 'Belgaum', 'res']
+];
+const sectorNames = { tech: 'Technology & corporate campuses', civic: 'Infrastructure, civic & institutional', res: 'Residential, hospitality & estates' };
+
 const detailDialog = $('#detail-dialog');
-const enquiryDialog = $('#enquiry-dialog');
+const enquiryDialog = $('#enquiry-dialog'); // Absent on the contact page, where the form is inline.
 function showDialog(dialog) {
   setMenu(false);
   setSlideshow(false);
@@ -105,33 +114,60 @@ function openProject(key) {
   const project = projects[key];
   const content = $('#detail-content');
   content.replaceChildren();
-  if (project.image) {
-    const image = document.createElement('img');
-    image.className = 'detail-image'; image.src = project.image; image.alt = project.alt;
-    content.append(image);
+  if (project.gallery) {
+    const figure = document.createElement('figure'); figure.className = 'detail-gallery';
+    const main = document.createElement('img'); main.className = 'detail-image';
+    const setImage = ([src, alt]) => { main.src = src; main.alt = alt; };
+    setImage(project.gallery[0]); figure.append(main);
+    if (project.gallery.length > 1) {
+      const thumbs = document.createElement('div'); thumbs.className = 'detail-thumbs';
+      project.gallery.forEach((image, index) => {
+        const thumb = document.createElement('button'); thumb.type = 'button';
+        thumb.setAttribute('aria-label', `Show photograph ${index + 1} of ${project.gallery.length}`);
+        thumb.setAttribute('aria-pressed', String(index === 0));
+        const img = document.createElement('img'); img.src = image[0]; img.alt = '';
+        thumb.append(img);
+        thumb.addEventListener('click', () => { setImage(image); $$('button', thumbs).forEach(item => item.setAttribute('aria-pressed', String(item === thumb))); });
+        thumbs.append(thumb);
+      });
+      figure.append(thumbs);
+    }
+    content.append(figure);
   }
   const body = document.createElement('div');
   body.className = 'detail-body';
   const category = document.createElement('span'); category.className = 'eyebrow'; category.textContent = project.category;
   const title = document.createElement('h2'); title.id = 'detail-title'; title.textContent = project.title;
-  body.append(category, title);
+  const meta = document.createElement('dl'); meta.className = 'credit-line detail-credit';
+  [['Project', project.title], ['Location', project.location], ['Partner', project.partner], ['Executing firm', project.firm], ['Project details', project.details]].forEach(([term, value]) => {
+    const row = document.createElement('div'); const dt = document.createElement('dt'); const dd = document.createElement('dd');
+    dt.textContent = term; dd.textContent = value; row.append(dt, dd); meta.append(row);
+  });
+  body.append(category, title, meta);
   project.paragraphs.forEach(text => { const p = document.createElement('p'); p.textContent = text; body.append(p); });
-  const note = document.createElement('p'); note.className = 'detail-note'; note.textContent = project.note; body.append(note);
+  if (project.list) {
+    const list = document.createElement('ul'); list.className = 'detail-list';
+    project.list.forEach(text => { const li = document.createElement('li'); li.textContent = text; list.append(li); });
+    body.append(list);
+  }
   const cta = document.createElement('button'); cta.className = 'button button-green'; cta.type = 'button'; cta.textContent = 'Plan a project with us ↗';
-  cta.addEventListener('click', () => { detailDialog.close(); showDialog(enquiryDialog); });
+  cta.addEventListener('click', () => { detailDialog.close(); openEnquiry(); });
   body.append(cta); content.append(body); showDialog(detailDialog);
 }
 $$('[data-project]').forEach(button => button.addEventListener('click', () => openProject(button.dataset.project)));
 
-$$('[data-story]').forEach(button => button.addEventListener('click', () => {
-  $('#detail-content').innerHTML = `<div class="detail-body"><span class="eyebrow">THREE ENTERPRISES. ONE SHARED VISION.</span><h2 id="detail-title">Experience, brought together.</h2><p>Based in Pune, Blue & Green Infrastructure combines complementary strengths in engineering, execution, technology and procurement.</p><h3>Mr. Anil S. Pund</h3><p><strong>Agrotech Engineers & Consultants · Established 1996</strong><br>An agricultural engineer with professional experience since 1990, bringing technical design, project execution and industrial supply expertise.</p><h3>Mr. Pramod Ballal</h3><p><strong>Aditi Irrigation Technologies Pvt. Ltd. · Established 2007</strong><br>A civil engineer working across landscape execution, automation and architectural water features, with pan-India delivery and international exposure.</p><h3>Mr. Rahul Kshirsagar</h3><p><strong>Samruddhi Enterprises · Established 2007</strong><br>An irrigation and water-management specialist bringing extensive procurement, supplier-network and commercial operations expertise.</p><p class="detail-note">Together, the founding enterprises support an integrated Design–Supply–Build–Maintain approach.</p></div>`;
-  showDialog(detailDialog);
-}));
-$$('[data-enquiry]').forEach(button => button.addEventListener('click', () => showDialog(enquiryDialog)));
+// The contact page shows the brief form inline; every other page opens it in a dialog.
+function openEnquiry() {
+  if (enquiryDialog) { showDialog(enquiryDialog); return; }
+  const firstField = $('#enquiry-form input');
+  firstField?.scrollIntoView({ behavior: 'smooth', block: 'center' });
+  firstField?.focus({ preventScroll: true });
+}
+$$('[data-enquiry]').forEach(button => button.addEventListener('click', openEnquiry));
 
 const form = $('#enquiry-form');
 $$('input, textarea', form).forEach(input => input.addEventListener('input', () => input.setCustomValidity('')));
-form.addEventListener('submit', event => {
+form?.addEventListener('submit', event => {
   event.preventDefault();
   for (const input of $$('input[required], textarea[required]', form)) {
     if (!input.value.trim() || (input.minLength > 0 && input.value.trim().length < input.minLength)) {
@@ -161,28 +197,32 @@ function displaySlide(index) {
   const slide = slides[currentSlide];
   $('#slide-title').textContent = slide.dataset.title;
   $('#slide-location').textContent = slide.dataset.location;
+  $('#slide-credit').textContent = slide.dataset.credit;
   $('#slide-current').textContent = String(currentSlide + 1).padStart(2, '0');
 }
 function setSlideshow(playing) {
   clearInterval(slideshowTimer);
-  slideshowTimer = playing ? setInterval(() => displaySlide(currentSlide + 1), 6500) : null;
   const control = $('#slide-play');
+  if (!control) return;
+  slideshowTimer = playing ? setInterval(() => displaySlide(currentSlide + 1), 6500) : null;
   control.setAttribute('aria-label', playing ? 'Pause slideshow' : 'Play slideshow');
   control.setAttribute('aria-pressed', String(playing));
   $('use', control).setAttribute('href', playing ? '#pause' : '#play');
 }
-$('#slide-next').addEventListener('click', () => { setSlideshow(false); displaySlide(currentSlide + 1); });
-$('#slide-prev').addEventListener('click', () => { setSlideshow(false); displaySlide(currentSlide - 1); });
-$('#slide-play').addEventListener('click', () => setSlideshow(!slideshowTimer));
-menuButton.addEventListener('click', () => setSlideshow(false));
-document.addEventListener('visibilitychange', () => { if (document.hidden) setSlideshow(false); });
-window.matchMedia('(prefers-reduced-motion: reduce)').addEventListener('change', () => setSlideshow(false));
-$('.hero').addEventListener('keydown', event => {
-  if (!['ArrowLeft', 'ArrowRight'].includes(event.key)) return;
-  event.preventDefault();
-  setSlideshow(false);
-  displaySlide(currentSlide + (event.key === 'ArrowRight' ? 1 : -1));
-});
+if (slides.length) {
+  $('#slide-next').addEventListener('click', () => { setSlideshow(false); displaySlide(currentSlide + 1); });
+  $('#slide-prev').addEventListener('click', () => { setSlideshow(false); displaySlide(currentSlide - 1); });
+  $('#slide-play').addEventListener('click', () => setSlideshow(!slideshowTimer));
+  menuButton.addEventListener('click', () => setSlideshow(false));
+  document.addEventListener('visibilitychange', () => { if (document.hidden) setSlideshow(false); });
+  window.matchMedia('(prefers-reduced-motion: reduce)').addEventListener('change', () => setSlideshow(false));
+  $('.hero').addEventListener('keydown', event => {
+    if (!['ArrowLeft', 'ArrowRight'].includes(event.key)) return;
+    event.preventDefault();
+    setSlideshow(false);
+    displaySlide(currentSlide + (event.key === 'ArrowRight' ? 1 : -1));
+  });
+}
 
 const capabilities = [
   { group: 'landscape', title: 'Landscape & horticulture', description: 'Soil remediation, native planting, mature specimen trees and expansive lawns, brought together with horticultural knowledge and sustainable landscape design.' },
@@ -218,15 +258,32 @@ $$('[data-expertise]').forEach(button => button.addEventListener('click', () => 
 const searchDialog = $('#search-dialog');
 const searchInput = $('#site-search');
 const searchIndex = [
-  { title: 'About Blue & Green', text: 'Our company, founding enterprises and integrated approach.', keywords: 'about people partners company team pune', section: 'about' },
-  { title: 'Our Expertise', text: 'Landscape, irrigation, water features and infrastructure.', keywords: 'services capabilities engineering design', section: 'expertise' },
-  { title: 'Selected Projects', text: 'Founding-firm legacy and Blue & Green commissions.', keywords: 'work projects portfolio', section: 'projects' },
-  { title: 'Our Legacy', text: 'Three enterprises. Decades of specialist experience.', keywords: 'history experience founders agrotech aditi samruddhi', section: 'legacy' },
-  { title: 'Sustainability', text: 'Water efficiency, ecological care and responsible engineering.', keywords: 'sustainable ecology nature environment solar', section: 'sustainability' },
-  { title: 'Plan Your Project', text: 'Prepare a project brief to share with our team.', keywords: 'contact enquiry email talk brief', section: 'contact' },
-  ...Object.entries(projects).map(([key, project]) => ({ title: project.title, text: project.category, keywords: project.paragraphs.join(' '), project: key })),
+  { title: 'About Blue & Green', text: 'Established in Pune on 18 December 2025.', keywords: 'about company pune established 2025', href: 'about.html' },
+  { title: 'Our History', text: 'Blue & Green’s establishment and our partners’ firm histories.', keywords: 'history timeline 1996 2007 legacy', href: 'about.html#history' },
+  { title: 'Founding Partners', text: 'Mr. Anil S. Pund, Mr. Pramod Ballal and Mr. Rahul Kshirsagar.', keywords: 'people partners founders team agrotech aditi hydroscape samruddhi pund ballal kshirsagar', href: 'partners.html' },
+  { title: 'Our Expertise', text: 'Landscape, irrigation, water features and infrastructure.', keywords: 'services capabilities engineering design', href: 'expertise.html' },
+  { title: 'Engineering Lifecycle', text: 'Five phases from hydraulic audit to stewardship.', keywords: 'process method cad schematic phases', href: 'expertise.html#method' },
+  { title: 'Blue & Green Commissions', text: 'Flagship projects executed as Blue & Green.', keywords: 'work projects commissions', href: 'projects.html' },
+  { title: 'Our Partners’ Project Track Record', text: 'Projects executed by our partners’ firms.', keywords: 'portfolio legacy sites agrotech aditi', href: 'track-record.html' },
+  { title: 'Selected Clients of Our Partners', text: 'Clients served by our partner firms.', keywords: 'clients tata bajaj reliance cummins kirloskar', href: 'clients.html' },
+  { title: 'Our Architects & PMC Network', text: 'Architects, landscape architects and project management consultants.', keywords: 'architect pmc consultant network thin venkataramanan halcrow', href: 'network.html' },
+  { title: 'Sustainability', text: 'Water efficiency, ecological care and responsible engineering.', keywords: 'sustainable ecology nature environment solar', href: 'expertise.html#sustainability' },
+  { title: 'Plan Your Project', text: 'Prepare a project brief to share with our team.', keywords: 'contact enquiry email talk brief', href: 'contact.html' },
+  ...Object.entries(projects).map(([key, project]) => ({ title: project.title, text: `${project.location} · ${project.firm}`, keywords: `${project.category} ${project.paragraphs.join(' ')}`, project: key })),
+  ...aditiProjects.map(([name, location, sector]) => ({ title: name, text: `${location ? location + ' · ' : ''}Aditi Irrigation Technologies`, keywords: `${sectorNames[sector]} ballal aditi`, href: 'track-record.html#aditi-index' })),
   ...capabilities.map(item => ({ title: item.title, text: item.description, keywords: item.group, expertise: item.group }))
 ];
+// Scroll within the current page when possible; otherwise load the target page.
+const pagePath = path => (path.endsWith('/') ? path + 'index.html' : path);
+function goTo(href) {
+  const url = new URL(href, location.href);
+  const target = url.hash && pagePath(url.pathname) === pagePath(location.pathname) ? document.getElementById(url.hash.slice(1)) : null;
+  if (!target) { location.href = url.href; return; }
+  target.scrollIntoView({ behavior: window.matchMedia('(prefers-reduced-motion: reduce)').matches ? 'instant' : 'smooth' });
+  history.replaceState(null, '', url.hash);
+  const heading = $('h2, h3', target);
+  if (heading) { heading.tabIndex = -1; heading.focus({ preventScroll: true }); }
+}
 function renderSearch() {
   const query = searchInput.value.trim().toLowerCase();
   const terms = query.split(/\s+/).filter(Boolean);
@@ -245,13 +302,7 @@ function renderSearch() {
       searchDialog.close();
       if (item.project) openProject(item.project);
       else if (item.expertise) openExpertise(item.expertise);
-      else {
-        const section = document.getElementById(item.section);
-        section.scrollIntoView({ behavior: window.matchMedia('(prefers-reduced-motion: reduce)').matches ? 'instant' : 'smooth' });
-        history.replaceState(null, '', `#${item.section}`);
-        const heading = $('h2', section);
-        if (heading) { heading.tabIndex = -1; heading.focus({ preventScroll: true }); }
-      }
+      else goTo(item.href);
     });
     $('#search-results').append(button);
   });
@@ -267,5 +318,38 @@ searchInput.addEventListener('keydown', event => {
   if (event.key === 'Enter') { event.preventDefault(); $('.search-result')?.click(); }
   if (event.key === 'ArrowDown') { event.preventDefault(); $('.search-result')?.focus(); }
 });
+
+// Aditi's marquee project index, filterable by sector.
+const aditiRows = $('#aditi-rows');
+if (aditiRows) {
+  const indexLabels = ['No.', 'Project', 'Location', 'Sector', 'Partner · Executing firm'];
+  aditiProjects.forEach(([name, location, sector], index) => {
+    const row = document.createElement('tr'); row.dataset.sector = sector;
+    [String(index + 1).padStart(2, '0'), name, location || 'Not specified', sectorNames[sector], 'Mr. Pramod Ballal · Aditi Irrigation Technologies'].forEach((text, column) => {
+      const cell = document.createElement(column === 1 ? 'th' : 'td');
+      if (column === 1) cell.scope = 'row';
+      cell.textContent = text; cell.dataset.label = indexLabels[column];
+      row.append(cell);
+    });
+    aditiRows.append(row);
+  });
+  function filterIndex(filter) {
+    let shown = 0;
+    $$('tr', aditiRows).forEach(row => { const visible = filter === 'all' || row.dataset.sector === filter; row.hidden = !visible; shown += visible; });
+    $$('[data-filter]').forEach(button => button.setAttribute('aria-pressed', String(button.dataset.filter === filter)));
+    $('#index-count').textContent = `Showing ${shown} of ${aditiProjects.length} projects`;
+  }
+  $$('[data-filter]').forEach(button => button.addEventListener('click', () => filterIndex(button.dataset.filter)));
+  filterIndex('all');
+}
+
+// Sections ease into view once; reduced-motion visitors see them immediately.
+if ('IntersectionObserver' in window && !window.matchMedia('(prefers-reduced-motion: reduce)').matches) {
+  document.documentElement.classList.add('has-reveal');
+  const observer = new IntersectionObserver(entries => entries.forEach(entry => {
+    if (entry.isIntersecting) { entry.target.classList.add('is-visible'); observer.unobserve(entry.target); }
+  }), { rootMargin: '0px 0px -8% 0px', threshold: 0.08 });
+  $$('.reveal').forEach(element => observer.observe(element));
+}
 
 $('#year').textContent = new Date().getFullYear();

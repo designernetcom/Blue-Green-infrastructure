@@ -7,13 +7,14 @@ const root = path.dirname(fileURLToPath(import.meta.url));
 const portFlag = process.argv.indexOf('--port');
 const port = Number(portFlag >= 0 ? process.argv[portFlag + 1] : process.env.PORT || 3000);
 const mime = { '.html': 'text/html; charset=utf-8', '.css': 'text/css; charset=utf-8', '.js': 'text/javascript; charset=utf-8', '.jpeg': 'image/jpeg', '.jpg': 'image/jpeg', '.png': 'image/png', '.svg': 'image/svg+xml', '.woff2': 'font/woff2', '.woff': 'font/woff', '.ttf': 'font/ttf' };
-const publicFiles = new Set(['/index.html', '/styles.css', '/app.js']);
+const publicFiles = new Set(['/styles.css', '/app.js']);
+const isPage = pathname => /^\/[a-z-]+\.html$/.test(pathname);
 http.createServer(async (req, res) => {
   try {
     const url = new URL(req.url, `http://${req.headers.host || 'localhost'}`);
     const pathname = decodeURIComponent(url.pathname === '/' ? '/index.html' : url.pathname);
     const file = path.resolve(root, '.' + pathname);
-    if (!file.startsWith(root + path.sep) || (!publicFiles.has(pathname) && !pathname.startsWith('/assets/'))) {
+    if (!file.startsWith(root + path.sep) || (!publicFiles.has(pathname) && !isPage(pathname) && !pathname.startsWith('/assets/'))) {
       res.writeHead(404); return res.end('Not found');
     }
     if (!(await stat(file)).isFile()) { res.writeHead(404); return res.end('Not found'); }
